@@ -78,7 +78,7 @@ var mapTools = {
             colors : [],
             labels : []
         };
-        for (dom in this.settings){
+        for (var dom in this.settings){
             legend.colors.push(this.settings[dom].color);
             legend.labels.push(this.settings[dom].name);
         }
@@ -86,10 +86,10 @@ var mapTools = {
     },
     settings : {},
     bcolors : ['#2980B9', '#8E44AD', '#C83D2F', '#EC5E00', '#F1C40F', '#27AE60', '#34495E']
-}
+};
 
 angular.module('firmwareDownload', ['ngMaterial', 'leaflet-directive'])
-  .controller('DownloadCtrl', function($scope, $location, $interpolate, $filter, $http, leafletData){
+.controller('DownloadCtrl', function($scope, $location, $interpolate, $filter, $http, leafletData){
     mapTools.prepare(config.sites);
     $scope.config = config;
     leafletData.getGeoJSON().then(function(lObjs){
@@ -110,7 +110,7 @@ angular.module('firmwareDownload', ['ngMaterial', 'leaflet-directive'])
         geojson : {}
     });
     var settings = {};
-    
+
     angular.forEach(mapTools.settings, function(dom){
         $http.get(dom.geojson).success(function(data, status) {
             settings[dom.id] = {
@@ -137,7 +137,6 @@ angular.module('firmwareDownload', ['ngMaterial', 'leaflet-directive'])
     });
 
     $scope.$on("leafletDirectiveGeoJson.dommap.mouseout", function(ev, leafletPayload) {
-        var target = leafletPayload.leafletEvent.target;
         var layer = leafletPayload.leafletEvent.target;
         var activeLayer = angular.fromJson($scope.selectedSite);
         if (activeLayer && leafletPayload.layerName == activeLayer.id){
@@ -149,48 +148,47 @@ angular.module('firmwareDownload', ['ngMaterial', 'leaflet-directive'])
 
     //TODO: better way for "external" updating layer style
     $scope.$watch("selectedSite", function(newValue, oldValue) {
-            var oldID = angular.fromJson(oldValue);
-            var newID = angular.fromJson(newValue);
-            leafletData.getGeoJSON().then(function(lObjs){
-                if (oldID){
-                    var obj = {};
-                    for (layer in lObjs[oldID.id]._layers){
-                        obj = lObjs[oldID.id]._layers[layer];
-                        break;
-                    }
-                    obj.setStyle(mapTools.getStyle(mapTools.settings[oldID.id]));
+        var oldID = angular.fromJson(oldValue);
+        var newID = angular.fromJson(newValue);
+        leafletData.getGeoJSON().then(function(lObjs){
+            var obj = {}, layer;
+            if (oldID){
+                for (layer in lObjs[oldID.id]._layers){
+                    obj = lObjs[oldID.id]._layers[layer];
+                    break;
                 }
-                if (newID){
-                    var obj = {};
-                    for (layer in lObjs[newID.id]._layers){
-                        obj = lObjs[newID.id]._layers[layer];
-                        break;
-                    }
-                    obj.setStyle(mapTools.getStyleClicked(mapTools.settings[newID.id]));
-                    obj.bringToFront();
-                    
+                obj.setStyle(mapTools.getStyle(mapTools.settings[oldID.id]));
+            }
+            if (newID){
+                for (layer in lObjs[newID.id]._layers){
+                    obj = lObjs[newID.id]._layers[layer];
+                    break;
                 }
-            });
+                obj.setStyle(mapTools.getStyleClicked(mapTools.settings[newID.id]));
+                obj.bringToFront();
+
+            }
+        });
     });
 
     $scope.$on("leafletDirectiveGeoJson.dommap.click", function(ev, leafletPayload) {
         $scope.selectedSite = $filter('json')(config.sites[leafletPayload.layerName]);
     });
 
-    
+
     $scope.parse = function (string) {
         try {
             return JSON.parse(string);
         } catch (error) {}
     };
-    
+
     $scope.splitString = function (string, nb) {
         return string.substring(0,nb);
     };
 
     $scope.interpolate = function (value) {
         try {
-            if (typeof(value) != undefined) {
+            if (typeof(value) !== undefined) {
                 return $interpolate(value)($scope);
             }
         } catch (error) {}
@@ -198,14 +196,15 @@ angular.module('firmwareDownload', ['ngMaterial', 'leaflet-directive'])
 
     $scope.buildFirmwareUrl = function() {
         var url = $scope.interpolate(config.url);
-        var manufacturer = angular.fromJson($scope.selectedManufacturer);
-        if (manufacturer == null) {
+        var manufacturerName = $scope.selectedRouter ? angular.fromJson($scope.selectedRouter).manufacturer : undefined;
+
+        if (!angular.isString(manufacturerName)) {
             return url;
         }
 
-        if (manufacturer.name == config.manufacturers['6netgear'].name && $scope.selectedMode == 'factory') {
+        if (manufacturerName == config.manufacturers['6netgear'].name && $scope.selectedMode == 'factory') {
             url += '.img';
-        } else if (manufacturer.name == config.manufacturers['7x86'].name) {
+        } else if (manufacturerName == config.manufacturers['7x86'].name) {
             url += '';
         } else {
             url += '.bin';
@@ -213,19 +212,19 @@ angular.module('firmwareDownload', ['ngMaterial', 'leaflet-directive'])
 
       return url;
     };
+
     //select factory by default
     $scope.selectedMode = "factory";
 
     //read selection from url parameters
-    if($location.search().mode != null) { $scope.selectedMode = $location.search().mode; }
-    if($location.search().region != null) { $scope.selectedSite = $filter('json')(config.sites[$location.search().region]); }
-    if($location.search().manufacturer != null) { $scope.selectedManufacturer = $filter('json')(config.manufacturers[$location.search().manufacturer]); }
-    if($location.search().router != null) { $scope.selectedRouter = $filter('json')(config.routers[$location.search().router]); }
+    if($location.search().mode !== undefined) { $scope.selectedMode = $location.search().mode; console.log('mode', $scope.selectedMode);}
+    if($location.search().region !== undefined) { $scope.selectedSite = $filter('json')(config.sites[$location.search().region]); }
+    if($location.search().manufacturer !== undefined) { $scope.selectedManufacturer = $filter('json')(config.manufacturers[$location.search().manufacturer]); }
+    if($location.search().router !== undefined) { $scope.selectedRouter = $filter('json')(config.routers[$location.search().router]); }
 
+})
 
-  })
-  //make parameters work without #! in the url
-  .config(function($locationProvider) {
-    $locationProvider.html5Mode({ enabled: true, requireBase: false });
-  });
-
+//make parameters work without #! in the url
+.config(function ($locationProvider) {
+    $locationProvider.html5Mode({enabled: true, requireBase: false});
+});

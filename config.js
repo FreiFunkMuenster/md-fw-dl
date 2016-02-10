@@ -108,4 +108,4 @@ name: "Münsterland",
 
 url: "http://firmware.freifunk-muensterland.org/{{parse(selectedSite).id}}/stable/{{selectedMode}}/gluon-ffms{{parse(selectedSite).short}}-v" +
 "{{config.version}}+{{parse(selectedSite).version}}-{{parse(selectedRouter).id}}{{selectedMode=='sysupgrade'?'-sysupgrade':''}}"
-}
+};

@@ -23,7 +23,6 @@
     <link rel="stylesheet" href="style.css"/>
     <link rel="stylesheet" href="lib/leaflet.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="lib/angular-material.min.css"/>
     <script src="lib/leaflet.js"></script>
     <script src="lib/angular.min.js"></script>
@@ -45,15 +44,15 @@
         <h1 class="headline">Freifunk <a ng-show="config.name">{{config.name}}</a> Firmware</h1>
 
         <h2 class="headline" ng-show="config.version">Version {{config.version}} herunterladen</h2>
-        
-        <leaflet legend="legend" id="dommap" lf-center="muenster" geojson="geojson" geojson-nested="true" height="400px" width="100%"></leaflet>
 
-        <md-select ng-model="selectedMode" ng-show="config.modes">
-            <md-option ng-repeat="(key, value) in config.modes" value="{{key}}">{{value}}</md-option>
-        </md-select>
+        <leaflet legend="legend" id="dommap" lf-center="muenster" geojson="geojson" geojson-nested="true" height="400px" width="100%"></leaflet>
 
         <md-select placeholder="Bitte wähle einen Ort" ng-model="selectedSite" ng-show="config.sites">
             <md-option ng-repeat="(key, value) in config.sites" value="{{value | json}}">{{value.name}}</md-option>
+        </md-select>
+
+        <md-select ng-model="selectedMode" ng-show="config.modes">
+            <md-option ng-repeat="(key, value) in config.modes" value="{{key}}">{{value}}</md-option>
         </md-select>
 
         <md-select placeholder="Hersteller" ng-model="selectedManufacturer" ng-change="selectedRouter = null;" ng-show="config.manufacturers">
