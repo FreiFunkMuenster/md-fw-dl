@@ -82,6 +82,7 @@ sites:{
   "domaene74" : {id: "domaene74",short:"d74",name:"Recklinghausen", version:"4.1.0", version_base:"2018.2.2", on_map: true},
   "domaene75" : {id: "domaene75",short:"d75",name:"Gronau", version:"4.1.0", version_base:"2018.2.2", on_map: true},
   "domaene76" : {id: "domaene76",short:"d76",name:"Herne", version:"4.1.0", version_base:"2018.2.2", on_map: true},
+  "domaene77" : {id: "domaene77",short:"d77",name:"Hamm", version:"4.1.0", version_base:"2018.2.2", on_map: true},
 },
 
 //router list for gluon v2018.2
@@ -89,23 +90,23 @@ manufacturers: {
   "0tp-link": {id: "tp-link", name: "TP-Link"},
   "1ubiquiti": {id: "ubiquiti", name: "Ubiquiti"},
   "2avm": {id: "avm", name: "AVM"},
-  "2zyxel": {id: "zyxel", name: "Zyxel"},
-  "3allnet": {id: "allnet", name: "Allnet"},
-  "3buffalo": {id: "buffalo", name: "Buffalo"},
-  "4d-link": {id: "d-link", name: "D-Link"},
-  "5gl-inet": {id: "gl-inet", name: "GL-Inet"},
-  "5gl-inet": {id: "gl", name: "GL Innovations"},
-  "6linksys": {id: "linksys", name: "Linksys"},
-  "7netgear": {id: "netgear", name: "Netgear"},
-  "8alfa": {id: "alfa-network", name: "ALFA-Network"},
-  "98devices": {id: "8devices", name: "8devices"},
-  "10meraki": {id: "meraki", name: "Meraki"},
-  "10nexx": {id: "nexx", name: "Nexx"},
-  "11openmesh": {id: "openmesh", name: "OpenMesh"},
-  "12onion": {id: "onion", name: "Onion"},
-  "13wd-ny-net": {id: "wd-ny-net", name: "WD My Net"},
-  "13wd-ny-net": {id: "raspberrypi", name: "Raspberry Pi"},
-  "14x86":{id:"x86",name:"x86"}
+  "3zyxel": {id: "zyxel", name: "Zyxel"},
+  "4allnet": {id: "allnet", name: "Allnet"},
+  "5buffalo": {id: "buffalo", name: "Buffalo"},
+  "6d-link": {id: "d-link", name: "D-Link"},
+  "7gl-inet": {id: "gl-inet", name: "GL-Inet"},
+  "8gl-innovations": {id: "gl", name: "GL Innovations"},
+  "9linksys": {id: "linksys", name: "Linksys"},
+  "10netgear": {id: "netgear", name: "Netgear"},
+  "11alfa": {id: "alfa-network", name: "ALFA-Network"},
+  "128devices": {id: "8devices", name: "8devices"},
+  "13meraki": {id: "meraki", name: "Meraki"},
+  "14nexx": {id: "nexx", name: "Nexx"},
+  "15openmesh": {id: "openmesh", name: "OpenMesh"},
+  "16onion": {id: "onion", name: "Onion"},
+  "17wd-ny-net": {id: "wd-ny-net", name: "WD My Net"},
+  "18raspberry-pi": {id: "raspberrypi", name: "Raspberry Pi"},
+  "19x86":{id:"x86",name:"x86"}
 },
 
 routers: {
@@ -315,4 +316,4 @@ name: "Münsterland",
 
 url: "http://firmware.freifunk-muensterland.de/{{parse(downloadableSite).id}}/versions/v{{parse(downloadableSite).version}}/{{selectedMode=='sysupgrade'||parse(selectedRouter).sysupgrade_only=='true'?'sysupgrade':''}}{{parse(selectedRouter).bootloader=='true'&&selectedMode=='factory'?'other':''}}{{parse(selectedRouter).sysupgrade_only!='true'&&parse(selectedRouter).bootloader!='true'&&selectedMode=='factory'?'factory':''}}/gluon-ffms{{parse(downloadableSite).short}}-v" +
 "{{parse(downloadableSite).version_base}}+{{parse(downloadableSite).version}}-{{parse(selectedRouter).id}}{{selectedMode=='sysupgrade'||parse(selectedRouter).sysupgrade_only=='true'?'-sysupgrade':''}}{{parse(selectedRouter).bootloader=='true'&&selectedMode=='factory'?'-bootloader':''}}"
-}
+};
